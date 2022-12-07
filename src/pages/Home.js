@@ -1,6 +1,33 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import { useWeb3React } from "@web3-react/core";
+import { InjectedConnector } from "@web3-react/injected-connector";
+
+import React, { useState } from "react";
 const Home = () => {
+  const injected = new InjectedConnector({
+    supportedChainIds: [137, 80001],
+  });
+
+  const { account, chainId, activate, active, library } = useWeb3React();
+
+  const [balance, setBalance] = useState(0);
+
+  const connectWallet = async () => {
+    await activate(injected);
+  };
+  const getUserBalance = async () => {
+    library?.getBalance(account).then((result) => {
+      setBalance(result / 1e18);
+    });
+  };
+
+  const switchNetwork = async () => {
+    await library.provider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x89" }],
+    });
+  };
+
   return (
     <div style={{ paddingTop: 100 }}>
       <Box
@@ -75,10 +102,12 @@ const Home = () => {
                 fontWeight: 400,
               }}
             >
-              Address of connected wallet is:
+              Address of connected wallet is:{" "}
+              <strong style={{ fontSize: 13 }}>{account}</strong>
             </span>
           </Typography>
           <Button
+            onClick={connectWallet}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -99,7 +128,7 @@ const Home = () => {
               },
             }}
           >
-            Connect Wallet
+            {active ? "Connected" : "Connect Wallet"}
           </Button>
         </Box>
       </Box>
@@ -175,10 +204,12 @@ const Home = () => {
                 fontWeight: 400,
               }}
             >
-              Balance Of User:
+              Balance Of User:{" "}
+              <strong style={{ fontSize: 13 }}>{balance}</strong>
             </span>
           </Typography>
           <Button
+            onClick={getUserBalance}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -266,7 +297,7 @@ const Home = () => {
               color: "#000",
             }}
           >
-            Allowance
+            ChainId
             <br />
             <br />
             <span
@@ -275,10 +306,12 @@ const Home = () => {
                 fontWeight: 400,
               }}
             >
-              User can spend:
+              Current Chain Id:{" "}
+              <strong style={{ fontSize: 13 }}>{chainId}</strong>
             </span>
           </Typography>
           <Button
+            onClick={switchNetwork}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -299,7 +332,7 @@ const Home = () => {
               },
             }}
           >
-            Approve
+            Change Network
           </Button>
         </Box>
       </Box>
