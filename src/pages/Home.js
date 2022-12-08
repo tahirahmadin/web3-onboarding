@@ -4,24 +4,31 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 
 import React, { useState } from "react";
 const Home = () => {
+  const [balance, setBalance] = useState(0);
+
+  // Making injected setup ready here
   const injected = new InjectedConnector({
     supportedChainIds: [137, 80001],
   });
 
+  // Getting all the functions of useWeb3React library
   const { account, chainId, activate, active, library } = useWeb3React();
 
-  const [balance, setBalance] = useState(0);
-
+  // Fn to enable wallet
   const connectWallet = async () => {
     await activate(injected);
   };
+
+  // Fn to get user native token balance
   const getUserBalance = async () => {
     library?.getBalance(account).then((result) => {
       setBalance(result / 1e18);
     });
   };
 
+  // Fn to switch the network to desired one
   const switchNetwork = async () => {
+    // Switching to Polygon Mainnet here
     await library.provider.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: "0x89" }],
@@ -29,7 +36,10 @@ const Home = () => {
   };
 
   return (
-    <div style={{ paddingTop: 100 }}>
+    <div style={{ paddingTop: 50 }}>
+      <h1 style={{ color: "white", textAlign: "center" }}>
+        Wallet Connection Example
+      </h1>
       <Box
         sx={{
           display: "flex",
@@ -192,7 +202,7 @@ const Home = () => {
               fontWeight: 700,
               fontSize: 30,
               lineHeight: "60%",
-              color: "#000",
+              color: "#f9f9f9",
             }}
           >
             Get User Balance
@@ -294,7 +304,7 @@ const Home = () => {
               fontWeight: 700,
               fontSize: 30,
               lineHeight: "60%",
-              color: "#000",
+              color: "#f9f9f9",
             }}
           >
             ChainId
