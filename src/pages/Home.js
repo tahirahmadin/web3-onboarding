@@ -8,7 +8,7 @@ const Home = () => {
 
   // Making injected setup ready here
   const injected = new InjectedConnector({
-    supportedChainIds: [137, 80001],
+    supportedChainIds: [137, 80001, 1, 4],
   });
 
   // Getting all the functions of useWeb3React library
@@ -37,6 +37,10 @@ const Home = () => {
 
   return (
     <div style={{ paddingTop: 50 }}>
+      {console.log(account)}
+      {console.log(active)}
+      {console.log(chainId)}
+      {console.log(library)}
       <h1 style={{ color: "white", textAlign: "center" }}>
         Wallet Connection Example
       </h1>
@@ -113,7 +117,9 @@ const Home = () => {
               }}
             >
               Address of connected wallet is:{" "}
-              <strong style={{ fontSize: 13 }}>{account}</strong>
+              <strong style={{ fontSize: 13, color: "black" }}>
+                {account}
+              </strong>
             </span>
           </Typography>
           <Button
@@ -214,8 +220,10 @@ const Home = () => {
                 fontWeight: 400,
               }}
             >
-              Balance Of User:{" "}
-              <strong style={{ fontSize: 13 }}>{balance}</strong>
+              MATIC:{" "}
+              <strong style={{ fontSize: 13, color: "black" }}>
+                {balance}
+              </strong>
             </span>
           </Typography>
           <Button
@@ -317,7 +325,9 @@ const Home = () => {
               }}
             >
               Current Chain Id:{" "}
-              <strong style={{ fontSize: 13 }}>{chainId}</strong>
+              <strong style={{ fontSize: 13, color: "black" }}>
+                {chainId}
+              </strong>
             </span>
           </Typography>
           <Button
