@@ -3,6 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 
 import React, { useState } from "react";
+import { useMetamask } from "../hooks/useMetamask";
 const Home = () => {
   const [balance, setBalance] = useState(0);
 
@@ -12,11 +13,11 @@ const Home = () => {
   });
 
   // Getting all the functions of useWeb3React library
-  const { account, chainId, activate, active, library } = useWeb3React();
+  const { account, chainId, connectMetamask, active, library } = useMetamask();
 
   // Fn to enable wallet
   const connectWallet = async () => {
-    await activate(injected);
+    await connectMetamask();
   };
 
   // Fn to get user native token balance
